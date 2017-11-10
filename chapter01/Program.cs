@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 class MyApp
 {
+    private static ParallelOptions opts = new ParallelOptions() {MaxDegreeOfParallelism = 2};
+
     private static void Main(string[] args)
     {
         List<string> names = new List<string>(args);
@@ -14,14 +16,32 @@ class MyApp
         }
 
         
-        Hello(names);
+        Hello(Reverse(names));
 
+    }
+
+    private static List<string> Reverse(List<string> Names) {
+        var sync = new object();
+        var list = new List<string>();
+
+        Parallel.ForEach(Names, opts, name =>
+        {
+            if (name is string)
+            {
+                string temp = name as string;
+                string reversed = new string(temp.ToLower().Reverse().ToArray());
+                lock(sync) {
+                    list.Add(reversed);
+                }
+            }
+        });
+
+
+        return list;
     }
 
     private static void Hello(List<string> Names)
     {
-        ParallelOptions opts = new ParallelOptions();
-        opts.MaxDegreeOfParallelism = 2;
         Parallel.ForEach(Names, opts, name =>
         {
             string message = string.Empty;

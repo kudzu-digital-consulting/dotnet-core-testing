@@ -1,25 +1,33 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 class MyApp
 {
     private static void Main(string[] args)
     {
-        string name = string.Empty;
-        if (args.Length > 0) name = args[0];
-        var task = HelloAsync(name);
-        task.Wait(2000);
+        List<string> names = new List<string>(args);
+        if (!names.Any()) {
+            names.Add(string.Empty);
+        }
+
+        
+        Hello(names);
+
     }
 
-    private static async Task HelloAsync(string Name)
+    private static void Hello(List<string> Names)
     {
-
-        await Task.Run(() =>
+        ParallelOptions opts = new ParallelOptions();
+        opts.MaxDegreeOfParallelism = 2;
+        Parallel.ForEach(Names, opts, name =>
         {
             string message = string.Empty;
-            if (Name is string && !string.IsNullOrEmpty(Name))
+            if (name is string && !string.IsNullOrEmpty(name))
             {
-                message = string.Format("Hello, {0}!", Name as string);
+                message = string.Format("Hello, {0}!", name as string);
             }
             else
             {

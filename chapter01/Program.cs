@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 class MyApp
 {
-    private static ParallelOptions opts = new ParallelOptions() {MaxDegreeOfParallelism = 4};
+    private static ParallelOptions opts = new ParallelOptions() {MaxDegreeOfParallelism = 1};
 
     private static void Main(string[] args)
     {
@@ -15,8 +16,14 @@ class MyApp
             names.Add(string.Empty);
         }
 
-        
+        var stopWatch = new Stopwatch();
+
+        stopWatch.Start();
         Hello(Reverse(names));
+
+        stopWatch.Stop();
+
+        Console.WriteLine(string.Format("Elapsed: {0}", stopWatch.ElapsedMilliseconds));
 
     }
 

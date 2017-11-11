@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 class MyApp
 {
-    private static ParallelOptions opts = new ParallelOptions() {MaxDegreeOfParallelism = 1};
+    private static ParallelOptions opts = new ParallelOptions() {MaxDegreeOfParallelism = 4};
 
     private static void Main(string[] args)
     {

@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 class MyApp
 {
-    private static ParallelOptions opts = new ParallelOptions() {MaxDegreeOfParallelism = 4};
+    private static ParallelOptions opts = new ParallelOptions() {MaxDegreeOfParallelism = Environment.ProcessorCount};
 
     private static void Main(string[] args)
     {
+        Console.WriteLine($"Processors: {Environment.ProcessorCount}.");
         List<string> names = new List<string>(args);
         if (!names.Any()) {
             names.Add(string.Empty);

@@ -10,6 +10,11 @@ namespace PrimeFinder
     {
         static void Main(string[] args)
         {
+            int findCount = 500;
+            if (args.Length > 0) {
+                int.TryParse(args[0], out findCount);
+            }
+
             Console.CancelKeyPress += delegate
             {
                 Console.WriteLine("## stopped ##");
@@ -22,7 +27,7 @@ namespace PrimeFinder
 
             var stopWatch = new System.Diagnostics.Stopwatch();
             stopWatch.Start();
-            PrimeFinder.Find(500);
+            PrimeFinder.Find(findCount);
             stopWatch.Stop();
 
             timer.Stop();
@@ -44,15 +49,11 @@ namespace PrimeFinder
             var primes = PrimeFinder.Primes(1, pt.Count());
             for (int i = 0; i < Math.Min(primes.Count(), pt.Count()); i++)
             {
-                Console.Write($"{pt[i]} <> {primes[i]}");
                 if (pt[i] != primes[i])
                 {
-                    Console.WriteLine("**");
+                    Console.WriteLine($"{pt[i]} <> {primes[i]} ** ");
                 }
-                else
-                {
-                    Console.WriteLine();
-                }
+
 
             }
 

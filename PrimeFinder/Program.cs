@@ -14,7 +14,7 @@ namespace PrimeFinder
             timer.Elapsed += async (sender, e) => await PrintPrimes();
             timer.Start();
 
-            PrimeFinder.Find();
+            PrimeFinder.Find(1000000);
 
             timer.Stop();
 
@@ -37,7 +37,7 @@ namespace PrimeFinder
                {
                    lock (printLock)
                    {
-                       batch = PrimeFinder.Primes(lastPrinted, 15);
+                       batch = PrimeFinder.Primes(lastPrinted, 100);
                        lastPrinted = lastPrinted + batch.Count;
 
 

@@ -12,7 +12,7 @@ namespace PrimeFinder
         private static ParallelOptions opts = new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount};
         private static List<int> _buffer = new List<int>();
 
-        public static List<int> Primes(int Skip, int Take = 10)
+        public static List<int> Primes(int Skip, int Take = 100)
         {
             lock (_primes)
             {
@@ -50,7 +50,7 @@ namespace PrimeFinder
             else {
                 lock (_buffer) {
                     _buffer.Add(Prime);
-                    if (_buffer.Count() > bucketsize) {
+                    if (_buffer.Count() > 100) {
                         _buffer.Sort();
                         lock (_primes) {
                             _primes.AddRange((_buffer));

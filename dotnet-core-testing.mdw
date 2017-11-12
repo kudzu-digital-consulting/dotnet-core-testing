@@ -2,5 +2,6 @@
   <Items>
     <Item>chapter01/chapter01.sln</Item>
     <Item>chapter02/chapter02.sln</Item>
+    <Item>PrimeFinder/PrimeFinder.sln</Item>
   </Items>
 </WorkspaceItem>

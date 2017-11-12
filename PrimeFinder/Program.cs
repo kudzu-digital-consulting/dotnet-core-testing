@@ -14,7 +14,10 @@ namespace PrimeFinder
             timer.Elapsed += async (sender, e) => await PrintPrimes();
             timer.Start();
 
-            PrimeFinder.Find(1000000);
+            var stopWatch = new System.Diagnostics.Stopwatch();
+            stopWatch.Start();
+            PrimeFinder.Find();
+            stopWatch.Stop();
 
             timer.Stop();
 
@@ -22,6 +25,22 @@ namespace PrimeFinder
             while (!t.IsCompleted)
             {
                 System.Threading.Thread.Sleep((500));
+            }
+
+            Console.WriteLine();
+            Console.WriteLine($"Time: {stopWatch.Elapsed}");
+
+            var pt = new PrimeTest().Primes();
+            var primes = PrimeFinder.Primes(1, 500);
+            for (int i = 0; i < Math.Max(primes.Count(),pt.Count()) ; i++)
+            {
+
+                if (pt[i] != primes[i])
+                {
+                    Console.WriteLine("** error **");
+                    Console.WriteLine($"{pt[i]} <> {primes[i]}");
+                }
+
             }
 
         }
@@ -47,7 +66,7 @@ namespace PrimeFinder
                        Console.WriteLine(p);
                    }
                }
-                while (all && (PrimeFinder.MaxFound() >= batch.Last()));
+               while (all && (PrimeFinder.MaxFound() >= batch.Last()));
            });
             t.Start();
             return t;

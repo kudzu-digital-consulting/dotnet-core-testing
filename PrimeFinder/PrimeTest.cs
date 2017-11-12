@@ -6,17 +6,17 @@ using System.Net;
 
 namespace PrimeFinder
 {
-    public class PrimeTest : IDisposable
+    public class PrimeTest 
     {
         private readonly string url = "http://www.primos.mat.br/primeiros_10000_primos.txt"; 
         private readonly string fileName = "primes.txt";
 
-        private StreamReader handle;
+        FileInfo primeFile;
 
         public PrimeTest()
         {
             DirectoryInfo appDir = new DirectoryInfo(".");
-            FileInfo primeFile = appDir.EnumerateFiles(fileName).FirstOrDefault();
+            primeFile = appDir.EnumerateFiles(fileName).FirstOrDefault();
 
             if (primeFile == null) {
                 using (var client = new WebClient()) {
@@ -27,23 +27,25 @@ namespace PrimeFinder
                 primeFile = appDir.EnumerateFiles(fileName).FirstOrDefault();
             }
 
-            handle = primeFile.OpenText();
+
         }
 
-        public void Dispose()
-        {
-            ((IDisposable)handle).Dispose();
-        }
+       
 
         public IReadOnlyList<int> Primes() {
             List<int> list = new List<int>();
-            while (!handle.EndOfStream) {
-                string line = handle.ReadLine();
-                string[] numbers = line.Split("\t");
-                foreach(var num in numbers) {
-                    int i = 0;
-                    int.TryParse(num, out i);
-                    if (i > 1) list.Add(i);
+            using (var handle = primeFile.OpenText())
+            {
+                while (!handle.EndOfStream)
+                {
+                    string line = handle.ReadLine();
+                    string[] numbers = line.Split("\t");
+                    foreach (var num in numbers)
+                    {
+                        int i = 0;
+                        int.TryParse(num, out i);
+                        if (i > 1) list.Add(i);
+                    }
                 }
             }
             return list;

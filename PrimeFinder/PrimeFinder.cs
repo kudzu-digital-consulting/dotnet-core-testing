@@ -100,8 +100,8 @@ namespace PrimeFinder
             // single thread the first 100 to prevent errors
             foreach (var num in range)
             {
-                if (num % 2 != 0 && !_primes.AsReadOnly().Skip(1).Where(p => (num % p) == 0)
-                               .Any()) {
+                if (num % 2 != 0 && !_primes.AsReadOnly().Skip(2).Any(p => (num % p) == 0))
+                {
                     PrimeFinder.AddPrime(num);
                 }
             }

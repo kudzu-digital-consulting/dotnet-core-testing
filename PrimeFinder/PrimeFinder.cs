@@ -9,7 +9,7 @@ namespace PrimeFinder
     public class PrimeFinder
     {
         private static List<int> _primes = new List<int>() { 1, 2, 3, 5 };
-        private static ParallelOptions opts = new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount};
+        private static ParallelOptions opts = new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount };
         private static List<int> _buffer = new List<int>();
 
         public static List<int> Primes(int Skip, int Take = 100)
@@ -29,7 +29,8 @@ namespace PrimeFinder
             }
         }
 
-        public static int Count() {
+        public static int Count()
+        {
             lock (_primes)
             {
                 return _primes.Count();
@@ -38,30 +39,14 @@ namespace PrimeFinder
 
         private static void AddPrime(int Prime)
         {
-            int bucketsize = 250;
-            if (Count() < bucketsize)
+            lock (_primes)
             {
-                lock (_primes)
-                {
-                    _primes.Add(Prime);
-                    _primes.Sort();
-                }
-            }
-            else {
-                lock (_buffer) {
-                    _buffer.Add(Prime);
-                    if (_buffer.Count() > 100) {
-                        _buffer.Sort();
-                        lock (_primes) {
-                            _primes.AddRange((_buffer));
-                        }
-                        _buffer.Clear();
-                    }
-                }
+                _primes.Add(Prime);
+
             }
         }
 
-        private static void factorNumber(int Number) 
+        private static void factorNumber(int Number)
         {
             try
             {
@@ -77,7 +62,8 @@ namespace PrimeFinder
                         Thread.Sleep(1000);
                     }
                     var tests = PrimeFinder.Primes(next);
-                    while (!tests.Any()) {
+                    while (!tests.Any())
+                    {
                         Thread.Sleep(500);
                         tests = PrimeFinder.Primes(next);
                     }
@@ -93,13 +79,15 @@ namespace PrimeFinder
 
                 }
                 // only need to test the first half of the primes
-                while (test * 2 < Number);
+                while (test * 2 <= Number);
 
                 // no divisor found for num
                 // add it to the list
                 PrimeFinder.AddPrime(Number);
 
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine((e.Message));
             }
         }
@@ -110,11 +98,15 @@ namespace PrimeFinder
             int count = Max - start;
             var range = Enumerable.Range(start, count);
             // single thread the first 100 to prevent errors
-            foreach(var num in range.Take(100)) {
-                PrimeFinder.factorNumber((num));
+            foreach (var num in range)
+            {
+                if (num % 2 != 0 && !_primes.AsReadOnly().Skip(1).Where(p => (num % p) == 0)
+                               .Any()) {
+                    PrimeFinder.AddPrime(num);
+                }
             }
 
-            Parallel.ForEach(range.Skip(100), opts, num => PrimeFinder.factorNumber(num));
+
         }
 
     }

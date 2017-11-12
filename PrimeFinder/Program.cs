@@ -10,7 +10,8 @@ namespace PrimeFinder
     {
         static void Main(string[] args)
         {
-            Console.CancelKeyPress += delegate {
+            Console.CancelKeyPress += delegate
+            {
                 Console.WriteLine("## stopped ##");
                 Console.WriteLine($"Found: {PrimeFinder.Count()}");
             };
@@ -41,18 +42,16 @@ namespace PrimeFinder
 
             var pt = new PrimeTest().Primes();
             var primes = PrimeFinder.Primes(1, pt.Count());
-            for (int i = 0; i < Math.Min(primes.Count(),pt.Count()) ; i++)
+            for (int i = 0; i < Math.Min(primes.Count(), pt.Count()); i++)
             {
-
+                Console.Write($"{pt[i]} <> {primes[i]}");
                 if (pt[i] != primes[i])
                 {
-                    Console.WriteLine();
-                    Console.WriteLine("** error **");
-                    Console.WriteLine($"{pt[i]} <> {primes[i]}");
-                    break;
+                    Console.WriteLine("**");
                 }
-                else {
-                    Console.Write(".");
+                else
+                {
+                    Console.WriteLine();
                 }
 
             }
@@ -80,15 +79,17 @@ namespace PrimeFinder
                    }
                    int lineCounter = lastPrinted - batch.Count();
                    foreach (var p in batch)
-                    {
+                   {
                        lineCounter++;
-                        Console.Write(p);
-                        if (lineCounter % 10 == 0) {
-                            Console.WriteLine();
-                        }
-                        else {
-                            Console.Write("\t");
-                        }
+                       Console.Write(p);
+                       if (lineCounter % 10 == 0)
+                       {
+                           Console.WriteLine();
+                       }
+                       else
+                       {
+                           Console.Write("\t");
+                       }
                    }
                }
                while (all && (PrimeFinder.MaxFound() >= batch.Last()));

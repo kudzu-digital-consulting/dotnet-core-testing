@@ -106,13 +106,15 @@ namespace PrimeFinder
 
         public static void Find(int Max = int.MaxValue)
         {
-            int start = PrimeFinder.MaxFound();
+            int start = PrimeFinder.MaxFound() + 1;
             int count = Max - start;
             var range = Enumerable.Range(start, count);
+            // single thread the first 100 to prevent errors
+            foreach(var num in range.Take(100)) {
+                PrimeFinder.factorNumber((num));
+            }
 
-
-
-            Parallel.ForEach(range, opts, num => PrimeFinder.factorNumber(num));
+            Parallel.ForEach(range.Skip(100), opts, num => PrimeFinder.factorNumber(num));
         }
 
     }

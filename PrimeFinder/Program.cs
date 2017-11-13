@@ -12,7 +12,14 @@ namespace PrimeFinder
         {
             int findCount = 500;
             if (args.Length > 0) {
-                int.TryParse(args[0], out findCount);
+                if (args[0].ToLower() == "all")
+                {
+                    findCount = int.MaxValue;
+                }
+                else
+                {
+                    int.TryParse(args[0], out findCount);
+                }
             }
 
             Console.CancelKeyPress += delegate

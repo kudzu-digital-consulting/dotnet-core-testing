@@ -100,7 +100,7 @@ namespace PrimeFinder
                        }
                    }
                }
-               while (all && (PrimeFinder.MaxFound() >= batch.Last()));
+               while (all && (PrimeFinder.MaxFound() > batch.Last()));
            });
             t.Start();
             return t;
